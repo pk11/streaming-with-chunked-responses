@@ -1,6 +1,10 @@
+tl;dr
+=====
+
 This demo app demonstrates how to provide a seamless UX with chunked responses and XHR2 (a fallback to spinning/iframe is also implemented)
 
 installation instructions:
+==========================
 
 * install and launch redis
 
