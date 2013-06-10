@@ -22,4 +22,4 @@ and
 
 ```redis 127.0.0.1:6379> PUBLISH "stream" "user a likes user b's item "```
 
-* check the various outpots (stdout, javascript console and the page)
+* check the various outputs (stdout, javascript console and the page)
