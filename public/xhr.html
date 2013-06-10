@@ -1,0 +1,43 @@
+<html>
+
+<div name="boo", id="boo" />
+
+<script src='/assets/javascripts/jquery-1.7.1.js'></script>
+<script>
+(function reconnect() {
+  
+  console.log("connecting to feed...");
+  
+  var xhr = new XMLHttpRequest();
+  xhr.open('GET', '/chunked', true);
+
+  var nextLine = 0;
+
+  xhr.onprogress = function () {
+    //readyState: headers received 2, body received 3, done 4
+    if (xhr.readyState != 2 && xhr.readyState != 3 && xhr.readyState != 4)
+        return;
+    if (xhr.readyState == 3 && xhr.status != 200)
+        return;
+    $("#boo").append("<div>"+xhr.response.slice(nextLine) +"</div>");  
+    
+    nextLine = xhr.response.length;
+  }
+
+  xhr.onload = function () {
+    console.log("reconnecting...");
+    reconnect();
+  }
+  xhr.onerror = function () {
+    console.log("reconnecting after error...");
+    reconnect();
+  }
+  xhr.onabort = function () {
+    console.log("reconnecting after abort...");
+    reconnect();
+  }
+
+  xhr.send();
+}());
+
+</script>
