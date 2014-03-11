@@ -16,8 +16,9 @@ object Application extends Controller {
   private val CONNECTION_TIMEOUT = (30 seconds)
 
   def chunked = Action { request =>
-    
-    val connection = new RedisClient("localhost").connectPubSub
+
+    val redisConnection = new RedisClient("localhost")
+    val connection = redisConnection.connectPubSub
 
     println("in chunked controller")
 
@@ -48,12 +49,14 @@ object Application extends Controller {
       onComplete = {
         println("onComplete:" + connection)
         connection.close()
+        redisConnection.shutdown()
       },
 
       onError = (e, i) => {
         println(e)
         println("onError:" + connection)
         connection.close()
+        redisConnection.shutdown()
       })
 
     request.queryString.get("iframe")
